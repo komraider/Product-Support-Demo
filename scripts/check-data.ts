@@ -3,6 +3,7 @@ import { AGGREGATES, PLATFORM } from '../src/data/drivers';
 import { SAMPLE_CASES } from '../src/data/cases';
 import { EMERGING_ALERTS } from '../src/data/alerts';
 import { PRODUCTION_CARDS } from '../src/data/outcomes';
+import { CASE_ORIGIN } from '../src/data/calculations';
 
 const checks: [string, unknown, unknown][] = [
   ['Total cases (12 weeks)', PLATFORM.totalCases, 127_842],
@@ -21,6 +22,7 @@ const checks: [string, unknown, unknown][] = [
   ['Rate limits contact rate', AGGREGATES.api_rate_limits.contactRate, 68],
   ['Rate limits 4-week change %', Math.round(AGGREGATES.api_rate_limits.fourWeekChange), 22],
   ['Billing contact rate', AGGREGATES.usage_billing.contactRate, 39],
+  ['Case origins sum to total', CASE_ORIGIN.customer + CASE_ORIGIN.dynatrace + CASE_ORIGIN.solarwinds, 127_842],
 ];
 
 let failed = 0;
@@ -31,6 +33,10 @@ for (const [label, actual, expected] of checks) {
 }
 const sampled = SAMPLE_CASES.reduce((s, c) => s + c.weight, 0);
 console.log(`INFO  ${SAMPLE_CASES.length} sample records representing ${Math.round(sampled).toLocaleString()} cases`);
+for (const ch of ['dynatrace_alert', 'solarwinds_alert']) {
+  const w = SAMPLE_CASES.filter((c) => c.channel === ch).reduce((s, c) => s + c.weight, 0);
+  console.log(`INFO  sampled ${ch}: ~${Math.round(w).toLocaleString()} cases`);
+}
 if (failed) {
   console.error(`${failed} check(s) failed`);
   process.exit(1);

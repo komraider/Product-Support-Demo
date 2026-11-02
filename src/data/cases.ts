@@ -33,6 +33,20 @@ const CHANNEL_WEIGHTS: { value: Channel; weight: number }[] = [
   { value: 'community', weight: 0.03 },
 ];
 
+// Cases auto-opened in ServiceNow by monitoring alerts (~1,184 Dynatrace, ~312 SolarWinds over 12 weeks).
+// Assigned by quota (sample index i of n in a driver-week) so the sampled totals match the headline split.
+const ALERT_SHARES: Record<string, [number, number]> = {
+  model_availability: [0.09, 0.033],
+  authentication_failures: [0.012, 0],
+};
+function alertChannel(driverId: string, i: number, n: number): Channel | null {
+  const shares = ALERT_SHARES[driverId];
+  if (!shares) return null;
+  const dyn = Math.round(n * shares[0]);
+  const sw = Math.round(n * shares[1]);
+  return i < dyn ? 'dynatrace_alert' : i < dyn + sw ? 'solarwinds_alert' : null;
+}
+
 function quota(n: number, pct: number) {
   return Math.round((n * pct) / 100);
 }
@@ -76,7 +90,7 @@ function generate(): SupportCase[] {
           productArea: d.productArea,
           driver: d.id,
           subdriver: sub,
-          channel: escalated ? (rand() < 0.7 ? 'ai_agent' : 'email') : pickWeighted(rand, CHANNEL_WEIGHTS),
+          channel: alertChannel(d.id, i, n) ?? (escalated ? (rand() < 0.7 ? 'ai_agent' : 'email') : pickWeighted(rand, CHANNEL_WEIGHTS)),
           resolutionPath: path,
           resolved: path !== 'unresolved',
           verifiedResolution: verified,
