@@ -97,7 +97,7 @@ export function OpportunityDrawer({ open, onClose }: { open: boolean; onClose: (
 
           <div className="grid gap-3 sm:grid-cols-4">
             {[
-              ['Baseline contact rate', '37 / 10k', 'Pre-release: 27'],
+              ['Baseline contact rate', '37 / 10k developers', 'Pre-release: 27'],
               ['Current trend', `+${a.fourWeekChange.toFixed(0)}%`, 'Four weeks'],
               ['Est. support cost', fmtMoney(a.annualCost), 'Annualized'],
               ['Affected population', fmtInt(a.affectedAccounts), 'Accounts, 28 days'],
@@ -264,7 +264,7 @@ export function OpportunityDrawer({ open, onClose }: { open: boolean; onClose: (
           <li>• Product owner: <strong className="text-ink">Developer Platform</strong>; Engineering team: <strong className="text-ink">Identity Platform</strong></li>
           <li>• Jira Align portfolio epic <strong className="text-ink">{OPPORTUNITY.epicId}</strong> under “{OPPORTUNITY.objective}”</li>
           <li>• Azure DevOps feature <strong className="text-ink">{OPPORTUNITY.featureId}</strong> “{OPPORTUNITY.featureTitle}”</li>
-          <li>• Locked: baseline 37 / 10k, target &lt; 24, 6 guardrails, {edited ? 'your edited' : 'the'} hypothesis</li>
+          <li>• Locked: baseline 37 / 10k developers, target &lt; 24, 6 guardrails, {edited ? 'your edited' : 'the'} hypothesis</li>
         </ul>
         <p className="mt-3 text-xs text-ink-3">Approval is based on aggregated evidence from {fmtInt(AGGREGATES.api_key_management.cases28d)} cases, not on any single case.</p>
       </Modal>

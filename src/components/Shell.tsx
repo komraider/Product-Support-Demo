@@ -240,7 +240,7 @@ export function AppShell({ active, children }: { active: string; children: React
         <ul className="mt-3 space-y-1.5">
           {[
             'One synthetic dataset (fictional Lattice API Platform) shared across all four workspaces.',
-            'Contact rates are normalized per 10,000 relevant active population, so hypergrowth does not hide or inflate trends.',
+            'Contact rates are normalized per 10,000 active developers (paid accounts for billing), so hypergrowth does not hide or inflate trends.',
             'AI outputs are pre-authored to show the intended behavior: evidence, inference and uncertainty kept separate.',
             'Every consequential action requires explicit human approval and is written to a decision log.',
           ].map((t) => (

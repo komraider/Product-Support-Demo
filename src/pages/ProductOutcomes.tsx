@@ -238,7 +238,7 @@ function Roadmap() {
           <CardHeader title="Why this item exists" />
           <div className="space-y-4 p-4 text-xs text-ink-2">
             <Section title="Evidence">
-              <p>Contact rate 27 → 37 per 10k after release 2026.10.2; 81% verified AI resolution; 14% recontact; repeated auth attempts during propagation.</p>
+              <p>Contact rate 27 → 37 per 10k developers after release 2026.10.2; 81% verified AI resolution; 14% recontact; repeated auth attempts during propagation.</p>
               <a href="#/support/driver/api_key_management" className="mt-1 inline-flex items-center gap-1 font-medium text-brand-600 hover:underline">Open evidence package <ChevronRight size={12} /></a>
             </Section>
             <Section title="Ownership">
@@ -326,7 +326,7 @@ function BillingOutcome() {
                 <CartesianGrid vertical={false} stroke="#eef1f5" />
                 <XAxis dataKey="label" tick={{ fontSize: 11, fill: '#64708a' }} tickLine={false} interval="preserveStartEnd" />
                 <YAxis tick={{ fontSize: 11, fill: '#64708a' }} tickLine={false} axisLine={false} domain={[0, 80]} />
-                <Tooltip formatter={(v: number) => [v.toFixed(1), 'Contact rate / 10k']} />
+                <Tooltip formatter={(v: number) => [v.toFixed(1), 'Contacts / 10k paid accounts']} />
                 <ReferenceLine x={rows[7].label} stroke="#8792a8" strokeDasharray="3 3" label={{ value: 'Release', position: 'insideTopLeft', fontSize: 10, fill: '#3d4a63' }} />
                 <ReferenceLine y={45} stroke={SERIES.aqua} strokeDasharray="5 4" label={{ value: 'Target < 45', position: 'insideBottomLeft', fontSize: 10, fill: '#146536' }} />
                 <Line isAnimationActive={false} dataKey="rate" stroke={SERIES.blue} strokeWidth={2} dot={{ r: 3, fill: SERIES.blue, stroke: '#fff', strokeWidth: 1.5 }} />

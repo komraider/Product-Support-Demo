@@ -60,7 +60,7 @@ export const SDK_DIAGNOSTICS_CARD: InterventionCard = {
 
 export const API_KEY_PROPOSED_CARD: InterventionCard = {
   id: 'OPP-0192', title: 'API Key Rotation Experience', driverId: 'api_key_management', lane: 'proposed',
-  problem: 'Customers cannot determine key-rotation state or regional propagation status from the Developer Console.',
+  problem: 'Developers cannot determine key-rotation state or regional propagation status from the Developer Console.',
   evidence: '27 → 37 contacts per 10k after release 2026.10.2; 81% verified AI resolution; 14% recontact.',
   productOwner: null, engineeringOwner: null,
   hypothesis: '',

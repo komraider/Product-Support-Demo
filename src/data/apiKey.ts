@@ -207,7 +207,7 @@ export const INVESTIGATION_SUMMARY = {
 };
 
 export const PROBLEM_STATEMENT =
-  'Developers successfully receive support for API-key rotation, but increasing normalized contact rate indicates that customers continue to encounter friction in the underlying product experience. Customers cannot reliably determine key-rotation state or regional propagation status from the Developer Console.';
+  'Developers successfully receive support for API-key rotation, but increasing normalized contact rate indicates that developers continue to encounter friction in the underlying product experience. Developers cannot reliably determine key-rotation state or regional propagation status from the Developer Console.';
 
 export const DEFAULT_HYPOTHESIS =
   'We believe that showing API-key rotation state, expiration state, propagation status, and actionable remediation in the Developer Console will reduce API-key-management contact rate from 37 to fewer than 24 contacts per 10,000 active developers within 30 days of release.';

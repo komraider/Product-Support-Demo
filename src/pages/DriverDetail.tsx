@@ -123,8 +123,8 @@ function DriverDetailBody({ id }: { id: string }) {
       </Card>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
-        <MetricCard label="Current contact rate" value={a.contactRate} sub="per 10k · 28-day" />
-        <MetricCard label={isKey ? 'Pre-release baseline' : 'Rate 4 weeks ago'} value={a.previousRate} sub={isKey ? 'Before 2026.10.2' : 'per 10k'} />
+        <MetricCard label="Current contact rate" value={a.contactRate} sub={`per 10k ${d.populationLabel} · 28-day`} />
+        <MetricCard label={isKey ? 'Pre-release baseline' : 'Rate 4 weeks ago'} value={a.previousRate} sub={isKey ? 'Before 2026.10.2' : `per 10k ${d.populationLabel}`} />
         <MetricCard label="Four-week trend" value={fmtSigned(a.fourWeekChange)} sub="4-wk avg vs prior 4" tone={a.fourWeekChange > 5 ? 'warn' : a.fourWeekChange < -5 ? 'good' : undefined} />
         <MetricCard label="Raw volume" value={fmtInt(a.cases28d)} sub="Last 28 days" />
         <MetricCard label="Affected accounts" value={fmtInt(a.affectedAccounts)} sub="Last 28 days" />
@@ -208,6 +208,7 @@ function DriverDetailBody({ id }: { id: string }) {
               markers={remapped.filter((m) => m.week >= 0)}
               numbered={numbered}
               baseline={isKey ? 27 : undefined}
+              populationLabel={d.populationLabel}
               target={isKey && range === 16 ? 24 : undefined}
             />
           ) : (
@@ -274,7 +275,7 @@ function DriverDetailBody({ id }: { id: string }) {
       {isKey && (
         <>
           <Card className="mt-5">
-            <CardHeader title="Segment breakdowns" subtitle="Share of driver volume · contact rate per 10k segment population · change vs. pre-release" />
+            <CardHeader title="Segment breakdowns" subtitle="Share of driver volume · contact rate per 10k developers in each segment · change vs. pre-release" />
             <div className="grid gap-px bg-line md:grid-cols-2">
               {SEGMENT_BREAKDOWNS.map((g) => (
                 <div key={g.id} className="bg-white p-4">
@@ -525,8 +526,8 @@ function ActionModal({ action, onClose, driverId, label }: { action: ActionKey |
     monitor: {
       title: 'Monitor trend',
       confirm: 'Start monitoring',
-      body: <p>Adds a watch: notify if the contact rate exceeds 40 per 10k or recontact exceeds 15% for two consecutive weeks.</p>,
-      run: () => done('monitoring', 'Monitoring enabled', 'Thresholds: rate > 40 / 10k or recontact > 15% (2 weeks).'),
+      body: <p>Adds a watch: notify if the contact rate exceeds 40 per 10k developers or recontact exceeds 15% for two consecutive weeks.</p>,
+      run: () => done('monitoring', 'Monitoring enabled', 'Thresholds: rate > 40 per 10k developers or recontact > 15% (2 weeks).'),
     },
     dismiss: {
       title: 'Dismiss alert?',

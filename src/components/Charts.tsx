@@ -124,9 +124,9 @@ function markerLines(markers: TimelineMarker[], labels: string[], numbered: Map<
 }
 
 export function DriverTrendCharts({
-  rows, visible, markers, numbered, target, baseline,
+  rows, visible, markers, numbered, target, baseline, populationLabel = 'active developers',
 }: {
-  rows: TrendRow[]; visible: Record<SeriesKey, boolean>; markers: TimelineMarker[]; numbered: Map<string, number>; target?: number; baseline?: number;
+  rows: TrendRow[]; visible: Record<SeriesKey, boolean>; markers: TimelineMarker[]; numbered: Map<string, number>; target?: number; baseline?: number; populationLabel?: string;
 }) {
   const labels = rows.map((r) => r.label);
   const pctKeys = (['verifiedAiResolution', 'humanEscalation', 'recontact7d'] as SeriesKey[]).filter((k) => visible[k]);
@@ -135,7 +135,7 @@ export function DriverTrendCharts({
   return (
     <div className="grid gap-4">
       {visible.contactRate && (
-        <ChartPanel title="Contact rate per 10,000 active developers" note="28-day rate · one axis">
+        <ChartPanel title={`Contact rate per 10,000 ${populationLabel}`} note="28-day rate · one axis">
           <LineChart data={rows} margin={{ top: 16, right: 12, left: -12, bottom: 0 }}>
             <CartesianGrid vertical={false} stroke={GRID} />
             {future && <ReferenceArea x1={future[0]} x2={future[1]} fill="#f4f6f9" fillOpacity={1} label={{ value: 'Planned', position: 'insideTop', fontSize: 10, fill: '#64708a' }} />}

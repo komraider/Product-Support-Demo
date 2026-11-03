@@ -186,7 +186,7 @@ export function SupportIntelligence() {
           <CardHeader title="Why normalized contact rates matter during hypergrowth" />
           <div className="p-4 text-sm">
             <div className="rounded-md bg-slate-50 px-3 py-2.5 text-center font-medium text-ink">
-              Contact rate = contacts for a driver ÷ relevant active population × 10,000
+              Contact rate = contacts for a driver ÷ active developers × 10,000 (billing: ÷ paid accounts)
             </div>
             <div className="mt-4 grid grid-cols-2 gap-3">
               {[
