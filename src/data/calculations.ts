@@ -49,6 +49,7 @@ export const OVERVIEW_CALCS: Calc[] = [
     id: 'rate', label: 'Contacts per 10k developers', value: n(PLATFORM.weeklyContactRate),
     formula: 'Cases in the latest week ÷ active developers that week × 10,000',
     inputs: [`${n(lastWeek.cases)} cases (Oct 19–25) ÷ ${n(lastWeek.developers)} active developers × 10,000 = ${lastWeek.rate.toFixed(1)}`],
+    note: 'Active developer = one person who made at least one authenticated API call or Console sign-in that week (product telemetry). Not the same as a customer account, which can have many developers.',
   },
   {
     id: 'ai', label: 'Verified AI resolution', value: `${Math.round(PLATFORM.verifiedAiResolution)}%`,
@@ -63,7 +64,7 @@ export const OVERVIEW_CALCS: Calc[] = [
   },
   {
     id: 'recon', label: '7-day recontact', value: `${Math.round(PLATFORM.recontact7d)}%`,
-    formula: 'Cases where the same customer contacted again for the same driver within 7 days ÷ all cases',
+    formula: 'Cases where the same developer or account contacted again for the same driver within 7 days ÷ all cases',
     inputs: [`${n(recontacts)} ÷ ${n(PLATFORM.totalCases)} = ${pct((recontacts / PLATFORM.totalCases) * 100)}`],
   },
   {

@@ -60,7 +60,7 @@ const COLS: Record<ColKey, { label: string; numeric?: boolean; sort?: (r: Driver
   driver: { label: 'Driver', sort: (r) => r.driver.label },
   area: { label: 'Product area', sort: (r) => r.driver.productArea },
   cases: { label: 'Case volume', numeric: true, sort: (r) => r.cases, title: '12-week case volume' },
-  rate: { label: 'Rate / 10k', numeric: true, sort: (r) => r.contactRate, title: 'Contacts ÷ relevant active population × 10,000 (28-day)' },
+  rate: { label: 'Rate / 10k', numeric: true, sort: (r) => r.contactRate, title: 'Contacts ÷ active developers × 10,000 (28-day). Usage Billing uses paid accounts instead.' },
   trend: { label: '4-wk trend', numeric: true, sort: (r) => r.fourWeek, title: 'Last 4 weeks vs prior 4 weeks (average contact rate)' },
   wow: { label: 'WoW', numeric: true, sort: (r) => r.wow, title: 'Week-over-week change in contact rate' },
   mom: { label: 'MoM', numeric: true, sort: (r) => r.mom, title: 'Change vs 4 weeks ago' },
@@ -157,7 +157,12 @@ function Cell({ col, r, spark, highlight }: { col: ColKey; r: DriverRow; spark: 
     case 'cases':
       return <>{fmtInt(r.cases)}</>;
     case 'rate':
-      return <span className="font-semibold text-ink">{fmtRate(r.contactRate)}</span>;
+      return (
+        <span className="font-semibold text-ink" title={`per 10k ${d.populationLabel}`}>
+          {fmtRate(r.contactRate)}
+          {d.populationLabel !== 'active developers' && <span className="ml-1 text-[10px] font-normal text-ink-3">paid accts</span>}
+        </span>
+      );
     case 'trend':
       return (
         <span className="inline-flex items-center gap-2">

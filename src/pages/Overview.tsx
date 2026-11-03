@@ -27,7 +27,7 @@ export function Overview() {
         title="Support demand, resolution quality and product outcomes"
         description={
           <>
-            Twelve weeks of support for Lattice API Platform, through Oct 25, 2026. Contact rates are normalized per 10,000 active developers, so
+            Twelve weeks of support for Lattice API Platform, through Oct 25, 2026. Contact rates are normalized per 10,000 active developers (paid accounts for billing), so
             hypergrowth (+29% developers) does not hide or inflate trends.
           </>
         }
@@ -90,7 +90,7 @@ export function Overview() {
                 remains unresolved.
               </p>
               <div className="mt-2.5 flex flex-wrap gap-x-5 gap-y-1 text-xs text-ink-2">
-                <span><strong className="text-ink">{key.contactRate}</strong> / 10k (from 27)</span>
+                <span><strong className="text-ink">{key.contactRate}</strong> per 10k developers (from 27)</span>
                 <span><strong className="text-warn-700">+{key.fourWeekChange.toFixed(0)}%</strong> rising rate (4 weeks)</span>
                 <span><strong className="text-ink">{key.verifiedAiResolution.toFixed(0)}%</strong> verified AI resolution</span>
                 <span><strong className="text-ink">{key.humanEscalation.toFixed(0)}%</strong> escalation</span>
@@ -138,7 +138,7 @@ export function Overview() {
       <Card className="mt-5">
         <CardHeader
           title="Top support drivers"
-          subtitle="Contact rate is per 10,000 relevant active population over 28 days (billing uses paid accounts). Click a row for detail."
+          subtitle="Contact rate is per 10,000 active developers over 28 days (Usage Billing: per 10,000 paid accounts). Click a row for detail."
           right={<Button size="sm" variant="ghost" onClick={() => go('#/support')}>Open explorer <ArrowRight size={13} /></Button>}
         />
         <DriverTable rows={top} cols={OVERVIEW_COLS} highlightId="api_key_management" caption="Top support drivers" />
