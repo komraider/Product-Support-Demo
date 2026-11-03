@@ -34,6 +34,8 @@ export const CHANNEL_LABEL: Record<string, string> = {
   email: 'Email',
   web_form: 'Web form',
   community: 'Community',
+  dynatrace_alert: 'Dynatrace alert (auto-opened)',
+  solarwinds_alert: 'SolarWinds alert (auto-opened)',
 };
 
 export const RESOLUTION_LABEL: Record<string, string> = {

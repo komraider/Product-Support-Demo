@@ -1,5 +1,5 @@
 import { AlertTriangle, CheckCircle2, CircleDashed, Info, Sparkles, X, XCircle } from 'lucide-react';
-import { useEffect, useId, useRef, type ReactNode } from 'react';
+import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 import { cx } from '../lib/format';
 
 export function Card({ children, className, as: As = 'section' }: { children: ReactNode; className?: string; as?: 'section' | 'div' | 'article' }) {
@@ -137,17 +137,33 @@ export function Button({
   );
 }
 
-export function Tip({ text, children }: { text: string; children?: ReactNode }) {
+export function Tip({ text, children, wide }: { text: ReactNode; children?: ReactNode; wide?: boolean }) {
   const id = useId();
+  const ref = useRef<HTMLSpanElement>(null);
+  const [align, setAlign] = useState<'center' | 'left' | 'right'>('center');
+  const [below, setBelow] = useState(false);
+  const place = () => {
+    const r = ref.current?.getBoundingClientRect();
+    if (!r) return;
+    const half = wide ? 170 : 130;
+    setAlign(r.left < half ? 'left' : window.innerWidth - r.right < half ? 'right' : 'center');
+    // Open downward when there is not enough room under the sticky header.
+    setBelow(r.top < (wide ? 260 : 160));
+  };
+  const pos = cx(align === 'left' ? 'left-0' : align === 'right' ? 'right-0' : 'left-1/2 -translate-x-1/2', below ? 'top-full mt-1.5' : 'bottom-full mb-1.5');
   return (
-    <span className="group relative inline-flex items-center">
+    <span ref={ref} className="group relative inline-flex items-center" onMouseEnter={place} onFocus={place}>
       <button type="button" aria-describedby={id} className="inline-flex items-center rounded text-ink-3 hover:text-ink focus:text-ink">
-        {children ?? <Info size={13} aria-label="More information" />}
+        {children ?? <Info size={13} aria-label="How this is calculated" />}
       </button>
       <span
         role="tooltip"
         id={id}
-        className="pointer-events-none absolute bottom-full left-1/2 z-40 mb-1.5 w-60 -translate-x-1/2 rounded-md bg-ink px-2.5 py-1.5 text-[11px] font-normal normal-case leading-snug tracking-normal text-white shadow-pop hidden group-focus-within:block group-hover:block"
+        className={cx(
+          'pointer-events-none absolute z-40 hidden rounded-md bg-ink px-3 py-2 text-left text-[11px] font-normal normal-case leading-snug tracking-normal text-white shadow-pop group-focus-within:block group-hover:block',
+          wide ? 'w-[320px] max-w-[85vw]' : 'w-60',
+          pos,
+        )}
       >
         {text}
       </span>
@@ -155,26 +171,36 @@ export function Tip({ text, children }: { text: string; children?: ReactNode }) 
   );
 }
 
+/** Formula + actual inputs for a metric, shown in a tooltip or inline. */
+export function CalcBody({ calc, light }: { calc: { formula: string; inputs: string[]; note?: string }; light?: boolean }) {
+  return (
+    <span className="block space-y-1">
+      <span className={cx('block font-semibold', light ? 'text-ink' : 'text-white')}>{calc.formula}</span>
+      {calc.inputs.map((i) => (
+        <span key={i} className={cx('block tabular-nums', light ? 'text-ink-2' : 'text-slate-200')}>= {i}</span>
+      ))}
+      {calc.note && <span className={cx('block', light ? 'text-ink-3' : 'text-slate-300')}>{calc.note}</span>}
+    </span>
+  );
+}
+
 export function MetricCard({
   label, value, sub, tone, tip, onClick, highlight,
-}: { label: string; value: ReactNode; sub?: ReactNode; tone?: 'good' | 'warn' | 'bad'; tip?: string; onClick?: () => void; highlight?: boolean }) {
-  const inner = (
-    <>
-      <div className="flex items-center gap-1 text-xs font-medium text-ink-3">
-        {label}
-        {tip && <Tip text={tip} />}
+}: { label: string; value: ReactNode; sub?: ReactNode; tone?: 'good' | 'warn' | 'bad'; tip?: ReactNode; onClick?: () => void; highlight?: boolean }) {
+  return (
+    <div className={cx('relative rounded-lg border bg-white px-4 py-3 text-left shadow-card', highlight ? 'border-amber-300 ring-1 ring-amber-200' : 'border-line', onClick && 'transition hover:border-brand-500/50 hover:shadow-pop')}>
+      {onClick && <button type="button" onClick={onClick} aria-label={`${label}: open details`} className="absolute inset-0 rounded-lg" />}
+      <div className="pointer-events-none relative">
+        <div className="flex items-center gap-1 text-xs font-medium text-ink-3">
+          {label}
+          {tip && <span className="pointer-events-auto"><Tip text={tip} wide={typeof tip !== 'string'} /></span>}
+        </div>
+        <div className="mt-1 text-2xl font-semibold tabular-nums text-ink">{value}</div>
+        {sub && (
+          <div className={cx('mt-0.5 text-xs', tone === 'good' ? 'text-good-700' : tone === 'warn' ? 'text-warn-700' : tone === 'bad' ? 'text-bad-700' : 'text-ink-3')}>{sub}</div>
+        )}
       </div>
-      <div className="mt-1 text-2xl font-semibold tabular-nums text-ink">{value}</div>
-      {sub && (
-        <div className={cx('mt-0.5 text-xs', tone === 'good' ? 'text-good-700' : tone === 'warn' ? 'text-warn-700' : tone === 'bad' ? 'text-bad-700' : 'text-ink-3')}>{sub}</div>
-      )}
-    </>
-  );
-  const cls = cx('rounded-lg border bg-white px-4 py-3 text-left shadow-card', highlight ? 'border-amber-300 ring-1 ring-amber-200' : 'border-line');
-  return onClick ? (
-    <button type="button" onClick={onClick} className={cx(cls, 'transition hover:border-brand-500/50 hover:shadow-pop')}>{inner}</button>
-  ) : (
-    <div className={cls}>{inner}</div>
+    </div>
   );
 }
 

@@ -1,7 +1,8 @@
-import { ArrowRight, Lightbulb } from 'lucide-react';
+import { ArrowRight, ChevronDown, Lightbulb } from 'lucide-react';
 import { DemandChart } from '../components/Charts';
 import { DriverTable, OVERVIEW_COLS, rowFromAggregate } from '../components/DriverTable';
-import { AIGenerated, Badge, Button, Card, CardHeader, MetricCard, PageHeader } from '../components/ui';
+import { AIGenerated, Badge, Button, CalcBody, Card, CardHeader, MetricCard, PageHeader } from '../components/ui';
+import { API_KEY_CALCS, CALC_BY_ID, CASE_ORIGIN } from '../data/calculations';
 import { EMERGING_ALERTS } from '../data/alerts';
 import { AGGREGATES, PLATFORM, TOP_DRIVER_IDS } from '../data/drivers';
 import { LADDER } from '../data/glossary';
@@ -32,28 +33,45 @@ export function Overview() {
         }
       />
 
+      <ol className="mb-5 grid gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-3" aria-label="What this application does">
+        {[
+          ['Resolve', 'The AI agent safely resolves genuine support needs, and escalates when it should.'],
+          ['Eliminate', 'Problems the product causes are routed to an owner and fixed, so customers stop needing support for them.'],
+          ['Measure', 'Contact rates normalized for growth show which one actually happened.'],
+        ].map(([t, d]) => (
+          <li key={t} className="bg-white px-4 py-3">
+            <div className="text-sm font-semibold text-ink">{t}</div>
+            <p className="mt-0.5 text-xs text-ink-2">{d}</p>
+          </li>
+        ))}
+      </ol>
+
       <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-5">
-        <MetricCard label="Support cases" value={fmtInt(PLATFORM.totalCases)} sub="12 weeks" tip="All channels: AI agent, email, web form and community." />
         <MetricCard
-          label="Contacts / 10k developers"
-          value={Math.round(PLATFORM.weeklyContactRate)}
-          sub="Weekly, latest week"
-          tip="All contacts in the week ÷ active developers × 10,000. Driver tables use a 28-day window per driver population."
+          label="ServiceNow cases"
+          value={fmtInt(PLATFORM.totalCases)}
+          sub={`12 weeks · ${fmtInt(CASE_ORIGIN.dynatrace + CASE_ORIGIN.solarwinds)} opened from alerts`}
+          tip={<CalcBody calc={CALC_BY_ID.cases} />}
         />
-        <MetricCard label="Verified AI resolution" value={`${Math.round(PLATFORM.verifiedAiResolution)}%`} sub="System-confirmed, 12 weeks" tip="Interactions where system evidence confirms the AI resolved the issue. Not the same as deflection." />
-        <MetricCard label="Human escalation" value={`${Math.round(PLATFORM.humanEscalation)}%`} sub="12 weeks" tip="Escalation is not failure when it is the correct, safest outcome." />
-        <MetricCard label="7-day recontact" value={`${Math.round(PLATFORM.recontact7d)}%`} sub="Same driver, 12 weeks" />
-        <MetricCard label="Emerging drivers" value={EMERGING_ALERTS.length} sub="Subdriver alerts" tone="warn" onClick={() => go('#/support')} tip="Signals produced by the emerging-driver rule (volume, accounts, growth, confidence, duration)." />
-        <MetricCard label="Unowned drivers" value={unowned.length} sub={approved ? 'API Key Management now owned' : 'Includes API Key Management'} tone="warn" onClick={() => go('#/support')} highlight={!approved} />
-        <MetricCard label="Interventions measuring" value={PRODUCTION_CARDS.length} sub="In production" onClick={() => go('#/outcomes')} />
+        <MetricCard label="Contacts / 10k developers" value={Math.round(PLATFORM.weeklyContactRate)} sub="Weekly, latest week" tip={<CalcBody calc={CALC_BY_ID.rate} />} />
+        <MetricCard label="Verified AI resolution" value={`${Math.round(PLATFORM.verifiedAiResolution)}%`} sub="System-confirmed, 12 weeks" tip={<CalcBody calc={CALC_BY_ID.ai} />} />
+        <MetricCard label="Human escalation" value={`${Math.round(PLATFORM.humanEscalation)}%`} sub="12 weeks" tip={<CalcBody calc={CALC_BY_ID.esc} />} />
+        <MetricCard label="7-day recontact" value={`${Math.round(PLATFORM.recontact7d)}%`} sub="Same driver, 12 weeks" tip={<CalcBody calc={CALC_BY_ID.recon} />} />
+        <MetricCard label="Emerging drivers" value={EMERGING_ALERTS.length} sub="Subdriver alerts" tone="warn" onClick={() => go('#/support')} tip={<CalcBody calc={CALC_BY_ID.emerging} />} />
         <MetricCard
-          label="Annual avoidable support cost"
-          value={fmtMoney(PLATFORM.annualAvoidableCost)}
-          sub="Estimate"
-          tip="Annualized 28-day cost × estimated avoidable share per driver (e.g., 60% for API Key Management). Illustrative unit costs."
+          label="Unowned drivers"
+          value={unowned.length}
+          sub={approved ? 'API Key Management now owned' : 'Includes API Key Management'}
+          tone="warn"
+          onClick={() => go('#/support')}
+          highlight={!approved}
+          tip={<CalcBody calc={{ ...CALC_BY_ID.unowned, inputs: [unowned.map((d) => d.label).join(', ')] }} />}
         />
-        <MetricCard label="Cases avoided by product" value={fmtInt(CASES_AVOIDED)} sub="Validated interventions only" tone="good" onClick={() => go('#/outcomes/billing')} />
+        <MetricCard label="Interventions measuring" value={PRODUCTION_CARDS.length} sub="In production" onClick={() => go('#/outcomes')} tip={<CalcBody calc={CALC_BY_ID.interventions} />} />
+        <MetricCard label="Annual avoidable support cost" value={fmtMoney(PLATFORM.annualAvoidableCost)} sub="Estimate" tip={<CalcBody calc={CALC_BY_ID.cost} />} />
+        <MetricCard label="Cases avoided by product" value={fmtInt(CASES_AVOIDED)} sub="Validated interventions only" tone="good" onClick={() => go('#/outcomes/billing')} tip={<CalcBody calc={CALC_BY_ID.avoided} />} />
       </div>
+      <p className="mt-2 text-[11px] text-ink-3">Hover or tab to any <span aria-hidden>ⓘ</span> to see the formula and the actual numbers behind it. All calculations are also listed in the <a href="#/glossary" className="text-brand-600 underline">metric glossary</a>.</p>
 
       <Card className="mt-5 overflow-hidden border-amber-200">
         <div className="grid gap-0 md:grid-cols-[1fr_auto]">
@@ -73,12 +91,27 @@ export function Overview() {
               </p>
               <div className="mt-2.5 flex flex-wrap gap-x-5 gap-y-1 text-xs text-ink-2">
                 <span><strong className="text-ink">{key.contactRate}</strong> / 10k (from 27)</span>
-                <span><strong className="text-warn-700">+{key.fourWeekChange.toFixed(0)}%</strong> in 4 weeks</span>
+                <span><strong className="text-warn-700">+{key.fourWeekChange.toFixed(0)}%</strong> rising rate (4 weeks)</span>
                 <span><strong className="text-ink">{key.verifiedAiResolution.toFixed(0)}%</strong> verified AI resolution</span>
                 <span><strong className="text-ink">{key.humanEscalation.toFixed(0)}%</strong> escalation</span>
                 <span><strong className="text-warn-700">{key.recontact7d.toFixed(0)}%</strong> recontact</span>
                 <span>{approved ? <Badge tone="green">Owned: Developer Platform</Badge> : <Badge tone="amber">Unowned</Badge>}</span>
               </div>
+              <details className="group mt-3 rounded-md border border-amber-200 bg-white text-xs">
+                <summary className="flex cursor-pointer list-none items-center gap-1.5 px-3 py-2 font-medium text-brand-700">
+                  <ChevronDown size={14} className="-rotate-90 transition-transform group-open:rotate-0" aria-hidden />
+                  How these numbers are calculated
+                </summary>
+                <dl className="grid gap-x-6 gap-y-3 border-t border-amber-100 px-3 py-3 md:grid-cols-2">
+                  {API_KEY_CALCS.map((c) => (
+                    <div key={c.id}>
+                      <dt className="font-semibold text-ink">{c.label}</dt>
+                      <dd className="mt-0.5"><CalcBody calc={c} light /></dd>
+                    </div>
+                  ))}
+                </dl>
+                <p className="border-t border-amber-100 px-3 py-2 text-ink-3">Source: ServiceNow cases classified to the API Key Management driver, divided by active developers from product telemetry. Rates are per 10,000 developers over a 28-day window.</p>
+              </details>
             </div>
           </div>
           <div className="flex items-center border-t border-amber-100 bg-amber-50/40 p-4 md:border-l md:border-t-0">

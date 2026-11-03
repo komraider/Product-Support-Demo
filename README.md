@@ -1,6 +1,6 @@
 # Support Intelligence Loop
 
-**Resolve what should be support. Eliminate what should not be support. Measure the difference.**
+**Resolve real support needs with AI. Eliminate avoidable ones with product fixes. Measure the difference.**
 
 A working product prototype of a closed-loop system. It safely resolves today's support cases and identifies and validates the product changes that prevent tomorrow's.
 
@@ -26,7 +26,7 @@ High AI resolution combined with a rising contact rate can mean the support oper
 | **2. Support Intelligence** | A driver explorer with 15 filters and search, normalized contact rates, emerging-driver alerts, a **fix-first prioritization** with adjustable trade-offs (intake reduction, response time, cost, quality), and a full **API Key Management investigation**: 12-week trend with release and signal markers, segments, telemetry, Dynatrace and SolarWinds signals, representative cases, blast radius at detection, an AI summary that separates observation, correlation and inference, and an AI-drafted bug report (repro steps, proposed fix, owning team). Ends with a **product-opportunity drawer** that requires human approval |
 | **3. Agent Trust Lab** | Nine scenarios, including billing/fraud escalation, covering ANSWER, CLARIFY, RETRIEVE, USE TOOL, ESCALATE and REFUSE. Each shows simulated tool calls and results (secret key material is never returned), a structured escalation package, customer follow-up to confirm resolution, and an evaluation panel. Includes a what-if where escalation is the correct outcome |
 | **4. Product Outcomes** | A lifecycle board (Proposed, In Development, Production & Measuring), roadmap traceability (objective → Jira Align epic → Azure DevOps feature → stories → release → measurement), dependency risk, and a validated **Usage Billing Transparency** outcome analysis |
-| **Ask the Evidence** | Ten evidence queries. Each answer gives a direct response, cited evidence, inference, uncertainty and a next action |
+| **Analyze Evidence** | Ten predefined questions. Each answer gives a direct response, cited evidence, inference, uncertainty, a next action, and exactly how it was produced (data queried and calculation steps) |
 
 Use **Guided demo** in the header for a 12-step walkthrough. **Reset** clears all decisions for the session.
 

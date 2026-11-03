@@ -182,15 +182,11 @@ export function AppShell({ active, children }: { active: string; children: React
             <button className="rounded p-1.5 hover:bg-slate-100 lg:hidden" onClick={() => setMobileOpen(true)} aria-label="Open navigation">
               <Menu size={19} />
             </button>
-            <div className="hidden min-w-0 flex-1 text-[13px] text-ink-2 md:block">
-              <span className="font-semibold text-ink">Resolve</span> what should be support.{' '}
-              <span className="font-semibold text-ink">Eliminate</span> what should not be.{' '}
-              <span className="font-semibold text-ink">Measure</span> the difference.
-            </div>
+            <div className="hidden flex-1 md:block" />
             <div className="flex flex-1 items-center justify-end gap-2 md:flex-none">
               <SyntheticDataBadge />
               <Button size="sm" variant="secondary" icon={<MessageSquareText size={14} />} onClick={() => openAsk()} className="hidden sm:inline-flex">
-                Ask the Evidence
+                Analyze Evidence
               </Button>
               <Button size="sm" variant="primary" icon={<PlayCircle size={14} />} onClick={() => setTourStep(0)} className="hidden sm:inline-flex">
                 Guided demo
@@ -211,7 +207,7 @@ export function AppShell({ active, children }: { active: string; children: React
                 {n.label}
               </a>
             ))}
-            <button onClick={() => openAsk()} className="whitespace-nowrap rounded-md px-2.5 py-1 text-xs font-medium text-ink-2 sm:hidden">Ask</button>
+            <button onClick={() => openAsk()} className="whitespace-nowrap rounded-md px-2.5 py-1 text-xs font-medium text-ink-2 sm:hidden">Analyze</button>
             <button onClick={() => setTourStep(0)} className="whitespace-nowrap rounded-md px-2.5 py-1 text-xs font-medium text-brand-700 sm:hidden">Tour</button>
           </nav>
         </header>

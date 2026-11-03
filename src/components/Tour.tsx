@@ -19,8 +19,8 @@ export function Tour() {
   const approved = useStore((s) => s.opportunityStatus === 'approved');
 
   const STEPS: Step[] = [
-    { route: '#/overview', title: 'Start with the overview', body: '127,842 cases over 12 weeks. Look at the Top Support Drivers table: API Key Management is highlighted. It is unowned and rising fast.' },
-    { route: '#/overview', title: 'Notice the contradiction', body: 'The AI agent verifies resolution for 81% of API-key contacts, yet the normalized contact rate rose from 27 to 37 per 10k (+31%). Support is succeeding; the product is still generating demand.' },
+    { route: '#/overview', title: 'Start with the overview', body: '127,842 ServiceNow cases over 12 weeks, including 1,450 opened automatically from Dynatrace and SolarWinds alerts. Hover any ⓘ to see how a number is calculated. In the Top Support Drivers table, API Key Management is highlighted: it is unowned and has a rising contact rate.' },
+    { route: '#/overview', title: 'Notice the contradiction', body: 'The AI agent verifies resolution for 81% of API-key contacts, yet the contact rate is rising: from 27 to 37 per 10k (+31%). Open “How these numbers are calculated” on the card to see the math. Support is succeeding; the product is still generating demand.' },
     { route: '#/support/driver/api_key_management', title: 'Open the driver investigation', body: 'Review the trend with release and signal markers, the subdriver split (rotation is 46%), segments, telemetry and representative cases. Toggle series and time ranges on the chart.' },
     { route: '#/support/driver/api_key_management', title: 'Correlation is not causation', body: 'The investigation summary labels each statement. Timing is consistent with release 2026.10.2 as a possible contributor, but contradictory and missing evidence are shown. Causality is not established.' },
     { route: '#/trust-lab/propagation', title: 'Inspect one conversation', body: 'Press "Run scenario". The agent checks authentication, calls getApiKeyMetadata and getKeyPropagationStatus, separates evidence from inference, avoids claiming a root cause and tags product friction.' },
@@ -34,8 +34,8 @@ export function Tour() {
     { route: '#/outcomes/roadmap', title: 'Roadmap & dependencies', body: 'Trace objective → epic → feature → stories → release → measurement. Security review is active, telemetry is at risk, and the propagation service needs cross-org coordination.' },
     { route: '#/outcomes/billing', title: 'A completed intervention', body: 'Usage Billing Transparency: 74 → 39 contacts per 10k paid accounts, recontact 16% → 8%, payment completion 72% → 87%, guardrails healthy. Classified validated.' },
     {
-      route: '#/outcomes/billing', title: 'Ask the Evidence', body: '"Did we solve the problem or merely move it?" AI-resolved billing volume fell because fewer customers needed support. That is demand elimination, not a drop in agent performance.',
-      action: { label: 'Ask the question', run: () => openAsk('solve_or_move') },
+      route: '#/outcomes/billing', title: 'Analyze Evidence', body: '"Did we solve the problem or merely move it?" AI-resolved billing volume fell because fewer customers needed support. That is demand elimination, not a drop in agent performance.',
+      action: { label: 'Analyze this question', run: () => openAsk('solve_or_move') },
     },
     { route: '#/outcomes/billing', title: 'The point', body: 'The best support interaction is safely resolved. The best support problem is eliminated.' },
   ];

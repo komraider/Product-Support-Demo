@@ -25,7 +25,7 @@ export function ProductOutcomes({ view }: { view?: string }) {
       <PageHeader
         eyebrow="Workspace 4 · Product Outcomes"
         title="From evidence to owned, measured product change"
-        description="Every item keeps its original baseline, hypothesis, target and guardrails from approval through measurement."
+        description="Each item is judged against the goal agreed when it was approved: the starting contact rate (baseline), the target, the hypothesis and the safety checks (guardrails). These are locked at approval, so results can’t be reframed after the fact."
       />
       <div role="tablist" aria-label="Product Outcomes views" className="mb-5 flex gap-1 overflow-x-auto border-b border-line">
         {TABS.map((t) => (
@@ -389,7 +389,7 @@ function BillingOutcome() {
         <div className="p-4">
           <p className="text-sm leading-relaxed text-ink">{o.assessment}</p>
           <div className="mt-3 flex flex-wrap gap-2">
-            <Button size="sm" variant="secondary" icon={<Target size={14} />} onClick={() => openAsk('solve_or_move')}>Ask: Did we solve the problem or merely move it?</Button>
+            <Button size="sm" variant="secondary" icon={<Target size={14} />} onClick={() => openAsk('solve_or_move')}>Analyze: Did we solve the problem or merely move it?</Button>
           </div>
         </div>
       </Card>

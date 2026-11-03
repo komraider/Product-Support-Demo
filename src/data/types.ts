@@ -13,7 +13,7 @@ export type SourceSystem =
   | 'Help center';
 
 export type CustomerSegmentId = 'free' | 'individual_paid' | 'team' | 'enterprise';
-export type Channel = 'ai_agent' | 'email' | 'web_form' | 'community';
+export type Channel = 'ai_agent' | 'email' | 'web_form' | 'community' | 'dynatrace_alert' | 'solarwinds_alert';
 export type ResolutionPath = 'ai_answer' | 'tool_assisted' | 'human_escalation' | 'documentation' | 'unresolved';
 export type Region = 'north_america' | 'europe' | 'asia_pacific' | 'other';
 export type TenureBand = 'first_14' | 'd15_90' | 'over_90';
